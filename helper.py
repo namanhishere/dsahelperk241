@@ -6,6 +6,7 @@ import threading
 import signal
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from concurrent.futures import ThreadPoolExecutor
 
 args = [
     "-std=c++17",
@@ -43,12 +44,12 @@ def run_command(command, key):
 
         # Start new process
         compile_threads[key] = subprocess.Popen(
-            command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+           "exec "+ command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
 
     # Capture output asynchronously
     stdout, stderr = compile_threads[key].communicate()
-    if compile_threads[key].returncode != 0:
+    if key in compile_threads and compile_threads[key].returncode != 0 :
         if stderr.decode() != "":
             print(f"Error executing {key}: {stderr.decode()}", file=sys.stderr)
         return None
@@ -129,17 +130,21 @@ if __name__ == "__main__":
     try:
         while True:
             command = input() #stop commands currently not working - require exit
-            # if command == "s":
-            #     # Stop all commands
-            #     for key in compile_threads.keys():
-            #         print(f"[HELPER] Terminating ongoing process for {key}")
-            #         compile_threads[key].terminate()
-            #         compile_threads[key].wait()
+            if command == "s":
+                # Stop all commands
+                for key in compile_threads.keys():
+                    print(f"[HELPER] Terminating ongoing process for {key}")
+                    compile_threads[key].kill()
+                    compile_threads[key].wait()
+                compile_threads.clear()
             if command == "r":
                 os.system(f"rm -rf ./obj")
-                for file in cpp_files:
-                    compile_file(file)
+                with ThreadPoolExecutor() as executor:
+                    executor.map(compile_file, cpp_files)
+                os.system("clear")
                 print("[HELPER] Recompile all the files complete! ")
+            if command == "clear":
+                os.system("clear")
     except KeyboardInterrupt:
         observer.stop()
 
