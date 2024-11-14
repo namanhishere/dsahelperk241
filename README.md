@@ -5,9 +5,9 @@ Khi khởi tạo, hệ thống sẽ build tất cả file của các thành ph�
 
 ## 2. Cách sử dụng
 ### 2.1 Yêu cầu hệ thống
-Linux (tested on Ubuntu)
-Python 3
-pip (for install watchdog)
+Linux (tested on Ubuntu)  
+Python 3  
+pip (for install watchdog)  
 
 ### 2.2 Sử dụng lần đầu
 * Cài đặt thư viện watchdog thông qua lệnh: pip install watchdog
