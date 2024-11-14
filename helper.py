@@ -135,6 +135,11 @@ if __name__ == "__main__":
             #         print(f"[HELPER] Terminating ongoing process for {key}")
             #         compile_threads[key].terminate()
             #         compile_threads[key].wait()
+            if command == "r":
+                os.system(f"rm -rf ./obj")
+                for file in cpp_files:
+                    compile_file(file)
+                print("[HELPER] Recompile all the files complete! ")
     except KeyboardInterrupt:
         observer.stop()
 
