@@ -19,7 +19,7 @@ pip (for install watchdog)
 * Bạn chỉ cần chạy file helper.py
 
 ## 3. Các vấn đề còn gặp phải
-* Thao tác kill task chưa thật sự hoàn thiện, có thể xảy ra lỗi
+* ~~Thao tác kill task chưa thật sự hoàn thiện, có thể xảy ra lỗi~~ (Đã được fix)
 * Đôi khi bị bouching trong việc nhận file lưu
 * Việc save file khi đang build có thể xáy ra lỗi ở lần chạy lại 
 => có thể fix bằng cách khởi động lại helper.py
